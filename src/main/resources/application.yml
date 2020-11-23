@@ -1,5 +1,5 @@
 server:
-  port: 1111
+  port: 8011
   ssl:
     enabled: true
     key-store: keystore.p12
