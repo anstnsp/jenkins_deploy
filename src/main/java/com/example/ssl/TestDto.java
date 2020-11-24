@@ -11,4 +11,5 @@ public class TestDto {
   private String str; 
   private int num; 
   private String aa;
+    private String a2;
 }
