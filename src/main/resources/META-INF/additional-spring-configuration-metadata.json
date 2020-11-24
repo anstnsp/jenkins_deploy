@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "spring.jwt.secret",
+      "type": "String",
+      "description": "JWT 만들 때 사용할 키"
+    },
+    {
+      "name": "hyperledger.walletPath",
+      "type": "String",
+      "description": "하이퍼렛저에서 사용하는 지갑경로"
+    }
+  ]
+}

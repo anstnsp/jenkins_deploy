@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### 내가 설정한 이그노어 ##
+process.pid 

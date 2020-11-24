@@ -24,7 +24,16 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  // 스프링 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// jwt 
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.springframework.security:spring-security-test'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
 }
 
 test {
