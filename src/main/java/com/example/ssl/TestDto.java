@@ -10,5 +10,5 @@ public class TestDto {
   private int level; 
   private String str; 
   private int num; 
-
+  private String aa;
 }
