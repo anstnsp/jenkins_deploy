@@ -1,9 +1,9 @@
 server:
   port: 8011
-  ssl:
-    enabled: true
-    key-store: keystore.p12
-    key-store-password: anstnsp
-    key-store-type: PKCS12
-    key-alias: spring1
+  # ssl:
+  #   enabled: true
+  #   key-store: keystore.p12
+  #   key-store-password: anstnsp
+  #   key-store-type: PKCS12
+  #   key-alias: spring1
      
