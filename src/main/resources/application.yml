@@ -16,7 +16,11 @@ server:
 spring:
   profiles:
     active: local 
-
+  #에러코드정의 파일 설정. 
+  messages:
+    basename: messages/exception
+    encoding: UTF-8 
+  #구동중인 pid 파일   
   pid:
     file: process.pid
   jwt:
@@ -31,9 +35,13 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: true
     show-sql: true
+    # mapping-resources:
+    #   - META-INF/ormJobInfo.xml
     hibernate:
       ddl-auto: create-drop
-
+    properties:
+      hibernate:
+        format_sql: true
 
 restTemplate:
   readTimeout: 5000

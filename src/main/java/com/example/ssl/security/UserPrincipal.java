@@ -30,11 +30,12 @@ public class UserPrincipal implements UserDetails {
   private Long id; 
   private String email; 
   private String password; 
+  private String name; 
   private Collection<? extends GrantedAuthority> authorities; 
 
   public static UserPrincipal create(User user) {
     List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-    return new UserPrincipal(user.getId(), user.getEmail(), user.getPassword(), authorities);
+    return new UserPrincipal(user.getId(), user.getEmail(), user.getPassword(), user.getName(), authorities);
   } 
 
   // public static UserPrincipal create(User user, Map<String, Object> attributes) {
@@ -46,44 +47,38 @@ public class UserPrincipal implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.authorities;
   }
 
   @Override
   public String getPassword() {
-    // TODO Auto-generated method stub
-    return null;
+     
+    return this.password;
   }
 
   @Override
   public String getUsername() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.email;
   }
 
   @Override
   public boolean isAccountNonExpired() {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public boolean isEnabled() {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
 }

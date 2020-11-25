@@ -1,4 +1,4 @@
-package com.example.ssl.web.dto.user;
+package com.example.ssl.web.dto.request.user;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -9,5 +9,6 @@ public class UserJoinDTO {
 
   private String email; 
   private String password; 
-
+  private String name; 
+  
 }

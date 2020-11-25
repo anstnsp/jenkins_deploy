@@ -1,4 +1,5 @@
-package com.example.ssl.web.dto.user;
+package com.example.ssl.web.dto.request.user;
+
 
 import lombok.Getter;
 import lombok.ToString;

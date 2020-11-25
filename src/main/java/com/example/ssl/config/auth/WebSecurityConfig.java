@@ -40,13 +40,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지 않습니다.
             .and()
             .authorizeRequests() // 요청에 대한 사용권한 체크
-            .antMatchers("/*/admin/**").hasRole("ADMIN")
-            .antMatchers("/*/user/**").hasRole("USER")
+            .antMatchers("/*/admin/**").hasRole("ADMIN") //ADMIN 쓰면 앞에 ROLE_가 자동으로 삽입댐 ROLE_ADMIN
+            .antMatchers("/*/users/**").hasRole("USER")
             .antMatchers("/*/signin", "/*/signup").permitAll()  //회원가입 및 로그인은 아무나 가능.
             .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
             .and()
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                    UsernamePasswordAuthenticationFilter.class);
+            .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //JWT 검증 에러 처리위해  
+            .and()
             // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
+            // 클라이언트가 리소스를 요청할 때 접근권한이 없는 경우 기본적으로 로그인폼으로 보내는데 그 역할을 하는 필터가 UserNamePasswordAuthenticationFilter다.
+            // 따라서 로그인폼으로 보내기 전(username...필터 전) JWT토큰 검증을 해 검증이 실패하면 JSON으로 인증오류를 뱉기위해 해당 필터를 아래 한줄이 추가됨. 
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                    UsernamePasswordAuthenticationFilter.class);   
+           
     }
+
+    //ignore check swagger resource 
+    // @Override
+    // public void configure(WebSecurity web) {
+    //   web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**", 
+    //     "/swagger-ui.html", "/webjars/**", "/swagger/**") 
+    // }
 }
