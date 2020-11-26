@@ -30,11 +30,6 @@ public class UserController {
   private final UserService userService; 
   private final ResponseService responseService; 
 
-  @GetMapping("/users")
-  public ListResult<User> findAllUsers() {
-    return responseService.getListResult(userRepository.findAll());
-  }
-
   @GetMapping("/users/me")
   public SingleResult<User> findMe(@RequestParam String lang) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

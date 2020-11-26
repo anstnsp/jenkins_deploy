@@ -11,6 +11,7 @@ import com.example.ssl.web.dto.response.common.ResponseService;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -46,11 +47,19 @@ public class ExceptionAdvice {
     return responseService.getFailResult(Integer.valueOf(getMessage("userExist.code")), getMessage("userExist.msg"));
   }
 
-  //JWT 토큰 잘못됐거나 없음. 
+  // * 1.JWT토큰 없이 API 호출하였을 경우 
+  // * 2.형식에 맞지 않거나 만료된 JWT토큰으로 API호출한 경우 
   @ExceptionHandler(CAuthenticationEntryPointException.class)
   @ResponseStatus(code = HttpStatus.FORBIDDEN)
   protected CommonResult notAuthenticatedException(HttpServletRequest request, CAuthenticationEntryPointException e) {
     return responseService.getFailResult(Integer.valueOf(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
+  }
+
+  // * 3.정상적인JWT토큰으로 API를 호출 하였으나 해당 리소스에 권한 없을경우. 
+  @ExceptionHandler(AccessDeniedException.class)
+  @ResponseStatus(code = HttpStatus.FORBIDDEN)
+  protected CommonResult accessDeniedException(HttpServletRequest request, AccessDeniedException e) {
+    return responseService.getFailResult(Integer.valueOf(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
   }
 
 
