@@ -12,6 +12,7 @@ import com.example.ssl.web.dto.response.common.ResponseService;
 import com.example.ssl.web.dto.response.common.SingleResult;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ public class UserController {
     return responseService.getSingleResult(userRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new));
   }
 
+  //회원수정
   @PutMapping("/users")
   public CommonResult modifyUser(@RequestBody UserInfoModiDTO userInfoModiDTO) {
     userService.updateUserInfo(userInfoModiDTO); 

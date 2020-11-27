@@ -13,8 +13,11 @@ import com.example.ssl.domain.UserRepository;
 import com.example.ssl.web.controller.advice.exception.CPasswordNotMatchedException;
 import com.example.ssl.web.controller.advice.exception.CUserExistException;
 import com.example.ssl.web.controller.advice.exception.CUserNotFoundException;
-import com.example.ssl.web.dto.request.user.UserJoinDTO;
-import com.example.ssl.web.dto.request.user.UserLoginDTO;
+import com.example.ssl.web.dto.request.sign.SignInRequestDTO;
+import com.example.ssl.web.dto.request.sign.SignupRequestDTO;
+import com.example.ssl.web.dto.response.common.CommonResult;
+import com.example.ssl.web.dto.response.common.ResponseService;
+import com.example.ssl.web.dto.response.common.SingleResult;
 
 @RequiredArgsConstructor
 @CustomBaseControllerAnnotation
@@ -23,34 +26,38 @@ public class SignController {
   private final PasswordEncoder passwordEncoder;
   private final JwtTokenProvider jwtTokenProvider;
   private final UserRepository userRepository;
+  private final ResponseService responseService; 
+
 
   // 회원가입
   @PostMapping("/signup")
-  public Long join(@RequestBody UserJoinDTO user) {
+  public CommonResult signUp(@RequestBody SignupRequestDTO signupRequestDTO) {
       //해당 이메일이 존재하는지 체크. 
-      userRepository.findByEmail(user.getEmail()).ifPresent(
+      userRepository.findByEmail(signupRequestDTO.getEmail()).ifPresent(
           u -> { throw new CUserExistException(); }
       );
 
-      return userRepository.save(User.builder()
-              .email(user.getEmail())
-              .password(passwordEncoder.encode(user.getPassword()))
-              .name(user.getName())
+      userRepository.save(User.builder()
+              .email(signupRequestDTO.getEmail())
+              .password(passwordEncoder.encode(signupRequestDTO.getPassword()))
+              .name(signupRequestDTO.getName())
               .role(Role.USER) // 최초 가입시 USER 로 설정
-              .build()).getId();
+              .build());
+
+      return responseService.getSuccessResult(); 
   }
 
   // 로그인
   @PostMapping("/signin")
-  public String login(@RequestBody UserLoginDTO user) {
-      User member = userRepository.findByEmail(user.getEmail())
+  public SingleResult<String> signIn(@RequestBody SignInRequestDTO signInRequestDTO) {
+      User user = userRepository.findByEmail(signInRequestDTO.getEmail())
               .orElseThrow(() -> new CUserNotFoundException("가입되지 않은 E-MAIL 입니다."));
 
-      if (!passwordEncoder.matches(user.getPassword(), member.getPassword())) {
+      if (!passwordEncoder.matches(signInRequestDTO.getPassword(), user.getPassword())) {
           throw new CPasswordNotMatchedException("잘못된 비밀번호입니다.");
       }
 
-      return jwtTokenProvider.createToken(member.getEmail(), member.getRole());
+      return responseService.getSingleResult(jwtTokenProvider.createToken(user.getEmail(), user.getRole()));
   }
 
 }

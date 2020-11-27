@@ -24,6 +24,10 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
+	//유효성 체크 
+	// https://mvnrepository.com/artifact/javax.validation/validation-api
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
   // 스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// jwt 

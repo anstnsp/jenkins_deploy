@@ -60,6 +60,7 @@ public class JwtTokenProvider {
 
   // 토큰에서 회원정보추출
   public String getUserPk(String token) {
+    System.out.println(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
     return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
   }
 

@@ -1,13 +1,17 @@
-package com.example.ssl.web.dto.request.user;
+package com.example.ssl.web.dto.request.sign;
 
 import javax.validation.constraints.NotEmpty;
-
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
+
 @Getter
+@Setter
+@NoArgsConstructor
 @ToString
-public class UserInfoModiDTO {
+public class SignupRequestDTO {
   //@NotEmpty 는 null 과 길이0 둘다 허용하지 않음. 
   //@NotNull 은 null만 비허용. 
   @NotEmpty(message = "이메일은 필수값 입니다.")
@@ -18,4 +22,5 @@ public class UserInfoModiDTO {
   private String name; 
   
   private String gender; 
+  
 }
