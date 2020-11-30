@@ -38,6 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
+
+  @Bean
+  public JwtAuthenticationFilter jwtAuthenticationFilter() {
+    return new JwtAuthenticationFilter(jwtTokenProvider);
+  }
+  
   @Bean
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {

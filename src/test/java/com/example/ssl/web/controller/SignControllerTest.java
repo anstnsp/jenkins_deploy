@@ -50,10 +50,8 @@ import org.springframework.web.context.WebApplicationContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@WebMvcTest({SignControllerTest.class})
 @ExtendWith(SpringExtension.class)
-// @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class SignControllerTest {
 
 
@@ -63,7 +61,6 @@ public class SignControllerTest {
   private UserRepository userRepository; 
   @MockBean
   private JwtTokenProvider jwtTokenProvider; 
-  
   private BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
   @MockBean
   private ResponseService responseService; 
@@ -71,12 +68,6 @@ public class SignControllerTest {
   @Autowired
   private WebApplicationContext webApplicationConterxt; 
 
-  @Before
-  public void setUp() {
-    mvc = MockMvcBuilders.webAppContextSetup(webApplicationConterxt)
-        .apply(springSecurity())
-        .build(); 
-  }
   @Test
   public void 회원가입() throws Exception {
     //given 

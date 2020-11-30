@@ -31,7 +31,7 @@ public class UserController {
   private final UserService userService; 
   private final ResponseService responseService; 
 
-  @GetMapping("/users/me")
+  @GetMapping("/v1/users/me")
   public SingleResult<User> findMe(@RequestParam String lang) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName(); //회원가입한 이메일을 반환한다. 

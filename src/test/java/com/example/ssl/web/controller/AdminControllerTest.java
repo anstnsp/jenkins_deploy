@@ -1,14 +1,20 @@
 package com.example.ssl.web.controller;
 
 import com.example.ssl.config.auth.JwtTokenProvider;
+import com.example.ssl.config.auth.WebSecurityConfig;
 import com.example.ssl.domain.User;
 import com.example.ssl.domain.UserRepository;
+import com.example.ssl.web.dto.response.common.CommonResult;
+import com.example.ssl.web.dto.response.common.ResponseService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,7 +40,12 @@ import java.util.Optional;
  - Spring Security의 테스트도 지원 한다.
  */
 @Slf4j
-@WebMvcTest(AdminControllerTest.class)
+@WebMvcTest(controllers = AdminControllerTest.class,
+        excludeFilters = @ComponentScan.Filter(
+          type = FilterType.ASSIGNABLE_TYPE,
+          classes = WebSecurityConfig.class
+        ))
+// @SpringBootTest
 public class AdminControllerTest {
 
   @Autowired
@@ -42,6 +53,8 @@ public class AdminControllerTest {
   
   @MockBean(name = "userRepository")
   private UserRepository userRepository; 
+  @MockBean
+  private ResponseService responseService; 
 
   @Test
   @WithMockUser(username = "mockUser", roles = {"ADMIN"})
@@ -52,13 +65,18 @@ public class AdminControllerTest {
     String name = "이름"; 
     User user = User.builder().email(email).password(password).name(name).build();
     
+    CommonResult commonResult = new CommonResult();
+    commonResult.setCode(0);
+    commonResult.setSuccess(true);
+    
     given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
+    given(responseService.getSuccessResult()).willReturn(commonResult);
     //when 
     ResultActions actions = mvc.perform(
-                                get("/admin/users/anstnsp@naver.com")
+                                get("/v1/admin/users/{email}", "anstnsp@naver.com")
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andDo(print());
-                            
+    
         
     //then 
     actions.andExpect(status().isOk())
